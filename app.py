@@ -12,7 +12,7 @@ os.environ['OPENAI_API_KEY'] = apikey
 
 #app framework
 st.title('🦜🔗 Youtube GPT Creator')
-prompt=st.text_input('Plug in your prompt here')
+prompt=st.text_input('Enter your prompt here')
 
 # prompt template
 title_template=PromptTemplate(
@@ -30,13 +30,12 @@ title_memory=ConversationBufferMemory(input_key='topic', memory_key='chat_histor
 script_memory=ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 #LLMs
-llm=OpenAI(temperature=0.9)  # dictates how creative or not-creative our LLM will be
+llm=OpenAI(temperature=0.9)  # sets the randomness
 title_chain=LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', memory=title_memory)
 script_chain=LLMChain(llm=llm, prompt=script_template, verbose=True, output_key='script', memory=script_memory)
 
 wiki = WikipediaAPIWrapper()
 
-#show stuff on the screen
 if prompt:
     title=title_chain.run(prompt)
     wiki_research=wiki.run(prompt)
